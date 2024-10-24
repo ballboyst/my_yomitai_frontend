@@ -10,9 +10,9 @@ const Scan = () => {
       console.log("Detected!!!");
       if (result !== undefined) {
         const code: string | null = result.codeResult.code;
-        if (code.startsWith("978")) {
+        if (code && code.startsWith("978")) {
           setIsbncode(code);
-        } else if (code.startsWith("192")) {
+        } else if (code && code.startsWith("192")) {
           setJancode(code);
         }
       }
