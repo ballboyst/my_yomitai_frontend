@@ -19,7 +19,7 @@ export default function BarcodeReader({
 
   const searchBook = async (isbncode: string) => {
     const res = await fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbncode}`,
+      `https://www.googleapis.com/books/v1/volumes?q=${isbncode}`,
     );
     const data = await res.json();
 
@@ -82,7 +82,6 @@ export default function BarcodeReader({
       },
       numOfWorker: navigator.hardwareConcurrency || 4,
       locate: true,
-      src: null,
     };
 
     Quagga.init(config, function (err) {

@@ -10,6 +10,7 @@ const Scan = () => {
       console.log("Detected!!!");
       if (result !== undefined) {
         const code: string | null = result.codeResult.code;
+        // const code = result.codeResult.code;
         if (code && code.startsWith("978")) {
           setIsbncode(code);
         } else if (code && code.startsWith("192")) {
@@ -46,7 +47,7 @@ const Scan = () => {
       },
       numOfWorker: navigator.hardwareConcurrency || 4,
       locate: true,
-      src: null,
+      src: null
     };
 
     Quagga.init(config, function (err) {
