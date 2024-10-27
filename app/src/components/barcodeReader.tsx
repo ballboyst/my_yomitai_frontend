@@ -41,24 +41,11 @@ export default function BarcodeReader({
   };
 
   useEffect(() => {
-    Quagga.onDetected((result) => {
-      console.log("Detected!!!");
-      if (result !== undefined) {
-        const code: string | null = result.codeResult.code;
-        if (code.startsWith("978")) {
-          setIsbncode(code);
-          searchBook(code);
-        } else if (code.startsWith("192")) {
-          setJancode(code);
-        }
-      }
-    });
-
-    const config = {
+    Quagga.init({
       inputStream: {
         name: "Live",
         type: "LiveStream",
-        target: "#preview",
+        target: document.getElementById("preview"), // IDは"preview"であることを確認
         constraints: {
           width: 640,
           height: 480,
@@ -82,22 +69,76 @@ export default function BarcodeReader({
       },
       numOfWorker: navigator.hardwareConcurrency || 4,
       locate: true,
-    };
-
-    Quagga.init(config, function (err) {
+    }, function(err) {
       if (err) {
         console.log(err);
         return;
       }
+  
+      // 初期化が成功した後にonDetectedを設定
+      Quagga.onDetected((result) => {
+        console.log("Detected!!!");
+        if (result !== undefined) {
+          const code: string | null = result.codeResult.code;
+          if (code && code.startsWith("978")) {
+            setIsbncode(code);
+            searchBook(code);
+          } else if (code && code.startsWith("192")) {
+            setJancode(code);
+          }
+        }
+      });
+  
       Quagga.start();
     });
   }, []);
 
-  useEffect(() => {
-    if (isbncode !== "") {
-      searchBook(isbncode);
-    }
-  }, []);
+
+
+  //   const config = {
+  //     inputStream: {
+  //       name: "Live",
+  //       type: "LiveStream" ,
+  //       target: document.getElementById("preview"),
+  //       constraints: {
+  //         width: 640,
+  //         height: 480,
+  //         facingMode: "environment",
+  //       },
+  //       singleChannel: false,
+    //   },
+    //   frequency: 10,
+    //   locator: {
+    //     patchSize: "large",
+    //     halfSample: true,
+    //     willReadFrequently: true,
+    //   },
+    //   decoder: {
+    //     readers: [
+    //       {
+    //         format: "ean_reader",
+    //         config: {},
+    //       },
+    //     ],
+    //   },
+    //   numOfWorker: navigator.hardwareConcurrency || 4,
+    //   locate: true,
+    // };
+
+  //   Quagga.init(config, function (err) {
+  //     if (err) {
+  //       console.log(err);
+  //       return;
+  //     }
+  //     Quagga.start();
+  //   });
+  // }, []);
+
+  // useEffect(() => {
+  //   if (isbncode !== "") {
+  //     searchBook(isbncode);
+  //   }
+  // }, [isbncode]);
 
   return (
     <>

@@ -6,6 +6,7 @@ interface BookInfo {
   publisher: string;
   pages: number;
   isbn: string;
+  image: string;
 }
 
 interface BookContextProps {
@@ -19,6 +20,7 @@ const defaultBookInfo = {
   publisher: "",
   pages: 0,
   isbn: "",
+  image: ""
 };
 
 const BookContext = createContext<BookContextProps>({
